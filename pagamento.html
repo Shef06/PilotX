@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Completa il tuo pagamento - PilotX</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #34C759;
+      --secondary-color: #2EA745;
+      --dark-color: #333333;
+      --light-color: #FFFFFF;
+      --gray-color: #F5F5F7; 
+      --dark-gray: #333333; 
+      --text-gray: #6C757D;
+      --white: #FFFFFF;
+      --box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: var(--gray-color);
+      color: var(--dark-color);
+      line-height: 1.6;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+    
+   
+    
+    /* Main Content */
+    .page-title {
+      text-align: center;
+      padding: 60px 0 40px;
+    }
+    
+    .page-title h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+      color: var(--dark-color);
+    }
+    
+    .page-title p {
+      font-size: 18px;
+      color: var(--text-gray);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    /* Payment container */
+    .payment-container {
+      max-width: 1000px;
+      margin: 0 auto 60px;
+    }
+    
+    .payment-card {
+      background-color: var(--light-color);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--box-shadow);
+    }
+    
+    .payment-grid {
+      display: grid;
+      grid-template-columns: 5fr 7fr;
+    }
+    
+    /* Order summary */
+    .order-summary {
+      background-color: var(--gray-color);
+      padding: 30px;
+    }
+    
+    .summary-title {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    
+    .vehicle-selected {
+      display: flex;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    
+    .vehicle-image {
+      width: 96px;
+      height: 64px;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-right: 15px;
+    }
+    
+    .vehicle-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .vehicle-name {
+      font-weight: 500;
+    }
+    
+    .vehicle-type {
+      font-size: 14px;
+      color: var(--text-gray);
+    }
+    
+    .summary-box {
+      background-color: var(--light-color);
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 25px;
+    }
+    
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    
+    .summary-item.total {
+      font-weight: 600;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #e0e0e0;
+    }
+    
+    .summary-label {
+      font-size: 14px;
+      color: var(--text-gray);
+    }
+    
+    .summary-value {
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    /* Payment form */
+    .payment-form {
+      padding: 30px;
+    }
+    
+    .payment-methods {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+    
+    .payment-method {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px;
+      border-radius: 6px;
+      border: 1px solid #e0e0e0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .payment-method.active {
+      border-color: var(--primary-color);
+    }
+    
+    .payment-method i {
+      margin-right: 8px;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      transition: border-color 0.3s ease;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(52, 199, 89, 0.2);
+    }
+    
+    .input-group {
+      position: relative;
+    }
+    
+    .input-icon-left {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-gray);
+    }
+    
+    .input-icon-right {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    .card-icons {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .input-with-icon-left {
+      padding-left: 35px;
+    }
+    
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    
+    .form-checkbox {
+      display: flex;
+      align-items: flex-start;
+      margin-top: 20px;
+    }
+    
+    .form-checkbox input {
+      margin-right: 10px;
+      margin-top: 4px;
+    }
+    
+    .form-checkbox a {
+      color: var(--primary-color);
+    }
+    
+    .form-checkbox a:hover {
+      text-decoration: underline;
+    }
+    
+    .submit-button {
+      display: block;
+      width: 100%;
+      background-color: var(--primary-color);
+      color: var(--light-color);
+      border: none;
+      border-radius: 6px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 25px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .submit-button:hover {
+      background-color: var(--secondary-color);
+    }
+    
+    .submit-button i {
+      margin-right: 8px;
+    }
+    
+    .security-message {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 12px;
+      color: var(--text-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .security-message i {
+      margin-right: 6px;
+    }
+    
+    /* Mobile menu */
+    #mobile-dropdown {
+      background-color: var(--light-color);
+      padding: 15px;
+    }
+    
+    #mobile-dropdown ul {
+      list-style: none;
+    }
+    
+    #mobile-dropdown a {
+      display: block;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+      }
+      
+      .hamburger {
+        display: block;
+      }
+      
+      .payment-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .page-title h1 {
+        font-size: 32px;
+      }
+      
+      .summary-title, .payment-title {
+        font-size: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container navbar">
+      <a href="#" class="logo">
+        <i class="fas fa-car"></i>
+        <div class="logo-text"><span>Pilot</span>X</div>
+      </a>
+      <nav>
+        <button class="hamburger" id="menu-toggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-menu">
+          <li><a href="home.html">Home</a></li>
+          <li><a href="la-nostra-flotta.html">La nostra flotta</a></li>
+          <li><a href="la-nostra-flotta.html">Profilo</a></li>
+          <li><a href="contatti.html">Contatti</a></li>
+          <li><a href="profilo.html">Profilo</a></li>
+          <li><a href="#">Esci</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Titolo principale -->
+    <div class="page-title">
+      <div class="container">
+        <h1>Completa il tuo pagamento</h1>
+        <p>Stai per finalizzare la tua prenotazione in modo sicuro</p>
+      </div>
+    </div>
+    
+    <div class="container payment-container">
+      <div class="payment-card">
+        <!-- Contenitore principale con griglia responsive -->
+        <div class="payment-grid">
+          <!-- Riepilogo prenotazione (colonna sinistra su desktop) -->
+          <div class="order-summary">
+            <h2 class="summary-title">Riepilogo prenotazione</h2>
+            
+            <!-- Veicolo scelto -->
+            <div class="vehicle-selected">
+              <div class="vehicle-image">
+                <img src="/api/placeholder/180/120" alt="Tesla Model 3">
+              </div>
+              <div>
+                <h3 class="vehicle-name">Tesla Model 3</h3>
+                <p class="vehicle-type">Berlina elettrica</p>
+              </div>
+            </div>
+            
+            <!-- Date e orari -->
+            <div class="summary-section">
+              <h3 class="summary-label">Date e orari</h3>
+              <div class="summary-box">
+                <div class="summary-item">
+                  <span class="summary-label">Ritiro:</span>
+                  <span class="summary-value">17 Maggio 2025, 10:00</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-label">Riconsegna:</span>
+                  <span class="summary-value">19 Maggio 2025, 18:00</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Accessori selezionati -->
+            <div class="summary-section">
+              <h3 class="summary-label">Accessori selezionati</h3>
+              <div class="summary-box">
+                <div class="summary-item">
+                  <span class="summary-label">Seggiolino bambini</span>
+                  <span class="summary-value">€15.00</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-label">Caricabatterie aggiuntivo</span>
+                  <span class="summary-value">€10.00</span>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Riepilogo costi -->
+            <div class="summary-section">
+              <h3 class="summary-label">Riepilogo costi</h3>
+              <div class="summary-box">
+                <div class="summary-item">
+                  <span class="summary-label">Tariffa base (2 giorni)</span>
+                  <span class="summary-value">€120.00</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-label">Accessori</span>
+                  <span class="summary-value">€25.00</span>
+                </div>
+                <div class="summary-item">
+                  <span class="summary-label">Assicurazione base</span>
+                  <span class="summary-value">€18.00</span>
+                </div>
+                <div class="summary-item total">
+                  <span>Totale</span>
+                  <span style="color: var(--primary-color)">€163.00</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Sezione pagamento (colonna destra su desktop) -->
+          <div class="payment-form">
+            <h2 class="summary-title">Metodo di pagamento</h2>
+            
+            <form id="payment-form">
+              <!-- Selezione metodi di pagamento -->
+              <div class="payment-methods">
+                <div class="payment-method active">
+                  <i class="far fa-credit-card" style="color: var(--primary-color)"></i>
+                  <span>Carta di credito</span>
+                </div>
+                <div class="payment-method">
+                  <i class="fab fa-paypal"></i>
+                  <span>PayPal</span>
+                </div>
+              </div>
+              
+              <!-- Campi carta di credito -->
+              <div class="form-fields">
+                <!-- Nome intestatario -->
+                <div class="form-group">
+                  <label for="card-name" class="form-label">Nome intestatario</label>
+                  <input type="text" id="card-name" class="form-input" placeholder="Mario Rossi">
+                </div>
+                
+                <!-- Numero carta -->
+                <div class="form-group">
+                  <label for="card-number" class="form-label">Numero carta</label>
+                  <div class="input-group">
+                    <i class="far fa-credit-card input-icon-left"></i>
+                    <input type="text" id="card-number" class="form-input input-with-icon-left" placeholder="1234 5678 9012 3456">
+                    <div class="input-icon-right">
+                      <div class="card-icons">
+                        <i class="fab fa-cc-visa" style="color: #1A1F71;"></i>
+                        <i class="fab fa-cc-mastercard" style="color: #EB001B;"></i>
+                        <i class="fab fa-cc-amex" style="color: #006FCF;"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Data scadenza e CVV -->
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label for="expiry-date" class="form-label">Data di scadenza</label>
+                    <input type="text" id="expiry-date" class="form-input" placeholder="MM / AA">
+                  </div>
+                  <div class="form-group">
+                    <label for="cvv" class="form-label">CVV</label>
+                    <div class="input-group">
+                      <input type="text" id="cvv" class="form-input" placeholder="123">
+                      <div class="input-icon-right">
+                        <i class="far fa-question-circle" title="Il codice di sicurezza di 3 cifre presente sul retro della carta"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Checkbox termini e condizioni -->
+                <div class="form-checkbox">
+                  <input id="terms" type="checkbox">
+                  <label for="terms">Accetto i <a href="#">termini e condizioni</a> e l'<a href="#">informativa sulla privacy</a></label>
+                </div>
+                
+                <!-- Pulsante Conferma e paga -->
+                <button type="submit" class="submit-button">
+                  <i class="fas fa-lock"></i>
+                  Conferma e paga €163.00
+                </button>
+                
+                <!-- Messaggio di sicurezza -->
+                <div class="security-message">
+                  <i class="fas fa-shield-alt"></i>
+                  Pagamento protetto con crittografia SSL a 256 bit
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <script>
+    // Toggle menu mobile
+    document.getElementById('menu-toggle').addEventListener('click', function() {
+      const mobileDropdown = document.getElementById('mobile-dropdown');
+      if (mobileDropdown.classList.contains('hidden')) {
+        mobileDropdown.classList.remove('hidden');
+      } else {
+        mobileDropdown.classList.add('hidden');
+      }
+    });
+    
+    // Basic form validation
+    document.getElementById('payment-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const cardName = document.getElementById('card-name').value;
+      const cardNumber = document.getElementById('card-number').value;
+      const expiryDate = document.getElementById('expiry-date').value;
+      const cvv = document.getElementById('cvv').value;
+      const terms = document.getElementById('terms').checked;
+      
+      let isValid = true;
+      let errorMessage = '';
+      
+      if (!cardName) {
+        isValid = false;
+        errorMessage += 'Inserisci il nome dell\'intestatario\n';
+      }
+      
+      if (!cardNumber || cardNumber.replace(/\s/g, '').length !== 16) {
+        isValid = false;
+        errorMessage += 'Inserisci un numero di carta valido\n';
+      }
+      
+      if (!expiryDate || !expiryDate.match(/^\d{2}\s?\/\s?\d{2}$/)) {
+        isValid = false;
+        errorMessage += 'Inserisci una data di scadenza valida (MM/AA)\n';
+      }
+      
+      if (!cvv || cvv.length < 3) {
+        isValid = false;
+        errorMessage += 'Inserisci un codice CVV valido\n';
+      }
+      
+      if (!terms) {
+        isValid = false;
+        errorMessage += 'Devi accettare i termini e condizioni\n';
+      }
+      
+      if (isValid) {
+        // Simulazione invio form
+        alert('Pagamento confermato! Verrai reindirizzato alla pagina di conferma.');
+        // In una applicazione reale, qui si invierebbe il form a un endpoint sicuro
+      } else {
+        alert('Verifica i seguenti errori:\n' + errorMessage);
+      }
+    });
+    
+    // Formattazione automatica numero carta
+    document.getElementById('card-number').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+      if (value.length > 16) {
+        value = value.substr(0, 16);
+      }
+      
+      // Formatta con spazi ogni 4 cifre
+      const parts = [];
+      for (let i = 0; i < value.length; i += 4) {
+        parts.push(value.substr(i, 4));
+      }
+      
+      e.target.value = parts.join(' ');
+    });
+    
+    // Formattazione automatica data scadenza
+    document.getElementById('expiry-date').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+      if (value.length > 4) {
+        value = value.substr(0, 4);
+      }
+      
+      if (value.length > 2) {
+        e.target.value = value.substr(0, 2) + ' / ' + value.substr(2);
+      } else {
+        e.target.value = value;
+      }
+    });
+    
+    // Limita CVV a max 4 caratteri
+    document.getElementById('cvv').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/[^0-9]/gi, '');
+      if (value.length > 4) {
+        value = value.substr(0, 4);
+      }
+      e.target.value = value;
+    });
+    
+    // Toggle metodo di pagamento
+    document.querySelectorAll('.payment-method').forEach(method => {
+      method.addEventListener('click', function() {
+        document.querySelectorAll('.payment-method').forEach(m => {
+          m.classList.remove('active');
+        });
+        this.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

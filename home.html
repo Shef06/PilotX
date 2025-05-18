@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PilotX - Car Sharing Ecologico</title>
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Variabili colori */
+        :root {
+            --primary-color: #34C759;
+            --primary-dark: #2EA745;
+            --light-gray: #f5f5f5;
+            --medium-gray: #e0e0e0;
+            --dark-gray: #333333;
+            --white: #ffffff;
+        }
+
+        /* Stili generali */
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .section-title {
+            position: relative;
+            margin-bottom: 50px;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            margin: 15px auto 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            background-color: var(--light-gray);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 600px;
+        }
+
+        .hero-text {
+            flex: 1;
+            padding-right: 40px;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #666;
+            max-width: 90%;
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: right;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Come funziona */
+        .how-it-works {
+            background-color: var(--white);
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 250px;
+            padding: 30px 20px;
+            text-align: center;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin: 0 10px 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-10px);
+        }
+
+        .step-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border-radius: 50%;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .step h3 {
+            margin-bottom: 15px;
+        }
+
+        /* Perché sceglierci */
+        .why-choose-us {
+            background-color: var(--light-gray);
+        }
+
+        .benefits {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+
+        .benefit {
+            flex: 1;
+            min-width: 250px;
+            padding: 30px 20px;
+            text-align: center;
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin: 0 10px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .benefit:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        /* CTA Section */
+        .cta {
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        .cta h2 {
+            color: var(--white);
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+
+        .cta p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .cta .btn {
+            background-color: var(--white);
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            padding: 15px 35px;
+        }
+
+        .cta .btn:hover {
+            background-color: var(--light-gray);
+        }
+
+        .cta .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+        }
+
+        .cta .btn-outline:hover {
+            background-color: var(--white);
+            color: var(--primary-color);
+        }
+
+        
+
+        /* Responsive Design */
+        @media screen and (max-width: 992px) {
+            .hero-content {
+                flex-direction: column;
+            }
+
+            .hero-text, .hero-image {
+                width: 100%;
+                text-align: center;
+                padding: 0;
+            }
+
+            .hero-image {
+                margin-top: 40px;
+            }
+
+            .step, .benefit {
+                min-width: calc(50% - 20px);
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: var(--white);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+                padding: 20px 0;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-item {
+                margin: 15px 0;
+            }
+
+
+
+            .step, .benefit {
+                min-width: 100%;
+            }
+        }
+
+        @media screen and (max-width: 576px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .cta .btn {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header (sticky) -->
+    <header>
+        <div class="container navbar">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div class="logo-text"><span>Pilot</span>X</div>
+            </div>
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="home.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="come-funziona.html" class="nav-link">Come funziona</a></li>
+                    <li class="nav-item"><a href="la-nostra-flotta.html" class="nav-link">La nostra flotta</a></li>
+                    <li class="nav-item"><a href="contatti.html" class="nav-link">Contatti</a></li>
+                    <li class="nav-item"><a href="log-in.html" class="nav-link btn">Accedi</a></li>
+                </ul>
+                <button class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">La mobilità urbana <span style="color: var(--primary-color);">ripensata</span> per te</h1>
+                <p class="hero-subtitle">Scopri un nuovo modo di muoverti in città con il nostro servizio di car sharing ecologico, flessibile e conveniente. Auto disponibili 24/7 in tutta la città.</p>
+                <a href="#" class="btn">Prenota un veicolo</a>
+            </div>
+            <div class="hero-image">
+                <img src="https://cdn-xy.drivek.com/eyJidWNrZXQiOiJkYXRhay1jZG4teHkiLCJrZXkiOiJjb25maWd1cmF0b3ItaW1ncy9jYXJzL2l0LzgwMC9URVNMQS9NT0RFTC0zLzQzMDA1X0JFUkxJTkEtMy1WT0xVTUktNC1QT1JURS90ZXNsYS1tb2RlbC0zLWZyb250LXZpZXcuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo4MDAsImhlaWdodCI6bnVsbCwiZml0IjoiY292ZXIifX19" alt="Auto elettrica PilotX">
+            </div>
+        </div>
+    </section>
+
+    <!-- Come funziona Section -->
+    <section class="how-it-works" id="how">
+        <div class="container">
+            <h2 class="section-title">Come funziona</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <i class="fas fa-car-side"></i>
+                    </div>
+                    <h3>Scegli il veicolo</h3>
+                    <p>Seleziona l'auto più adatta alle tue esigenze tra la nostra flotta di veicoli elettrici e ibridi disponibili in tutta la città.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <i class="fas fa-sliders"></i>
+                    </div>
+                    <h3>Personalizza</h3>
+                    <p>Scegli la durata del noleggio, aggiungi accessori extra e imposta il tuo itinerario direttamente dall'app.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h3>Paga e parti</h3>
+                    <p>Completa il pagamento in modo sicuro, sblocca l'auto con l'app e inizia il tuo viaggio. Nessuna chiave, nessuna complicazione.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Perché scegliere PilotX Section -->
+    <section class="why-choose-us">
+        <div class="container">
+            <h2 class="section-title">Perché scegliere PilotX</h2>
+            <div class="benefits">
+                <div class="benefit">
+                    <div class="benefit-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>Assistenza 24/7</h3>
+                    <p>Il nostro team di supporto è disponibile 24 ore su 24, 7 giorni su 7 per aiutarti in qualsiasi situazione.</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Veicoli ecologici</h3>
+                    <p>La nostra flotta è composta al 100% da veicoli elettrici e ibridi per un impatto ambientale ridotto.</p>
+                </div>
+                <div class="benefit">
+                    <div class="benefit-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>App mobile</h3>
+                    <p>Gestisci tutto dal tuo smartphone: prenota, sblocca e paga direttamente dall'app PilotX.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Pronto a provare PilotX?</h2>
+            <p>Registrati ora e scopri i nostri veicoli. Ottieni 30 minuti di guida gratuita con il tuo primo noleggio!</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn">Registrati ora</a>
+                <a href="#" class="btn btn-outline">Scopri i veicoli</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo"><span>Pilot</span>X</div>
+                    <p>Servizio di car sharing ecologico che sta rivoluzionando il modo di muoversi in città.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Link utili</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Come funziona</a></li>
+                        <li><a href="#">La nostra flotta</a></li>
+                        <li><a href="#">Prezzi</a></li>
+                        <li><a href="#">Domande frequenti</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Supporto</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Centro assistenza</a></li>
+                        <li><a href="#">Contattaci</a></li>
+                        <li><a href="#">Termini e condizioni</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contatti</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt"></i> Via Milano 123, 20100 Milano</p>
+                        <p><i class="fas fa-phone"></i> +39 02 1234567</p>
+                        <p><i class="fas fa-envelope"></i> info@pilotx.it</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 PilotX Car Sharing. Tutti i diritti riservati.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger menu toggle
+        document.querySelector('.hamburger').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                if(this.getAttribute('href') !== '#') {
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+                
+                // Close mobile menu if open
+                document.querySelector('.nav-menu').classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

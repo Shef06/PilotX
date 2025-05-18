@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La nostra flotta | PilotX</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #34C759;
+      --secondary-color: #2EA745;
+      --dark-color: #333333;
+      --light-color: #FFFFFF;
+      --gray-color: #F5F5F7; 
+      --dark-gray: #333333; 
+      --text-gray: #6C757D;
+      --white: #FFFFFF;
+      --box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: var(--light-color);
+      color: var(--dark-color);
+      line-height: 1.6;
+    }
+    
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 15px;
+    }
+    
+    /* Page Title */
+    .page-title {
+      text-align: center;
+      padding: 60px 0 40px;
+      background-color: var(--gray-color);
+    }
+    
+    .page-title h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+      color: var(--dark-color);
+    }
+    
+    .page-title p {
+      font-size: 18px;
+      color: var(--text-gray);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    /* Filters */
+    .filters {
+      padding: 30px 0;
+      background-color: var(--light-color);
+      border-bottom: 1px solid #eee;
+    }
+    
+    .filter-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .filter-item {
+      padding: 10px 20px;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      background-color: var(--light-color);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .filter-item:hover, .filter-item.active {
+      background-color: var(--primary-color);
+      color: var(--light-color);
+      border-color: var(--primary-color);
+    }
+    
+    select.filter-select {
+      padding: 10px 30px 10px 20px;
+      border: 1px solid #ddd;
+      border-radius: 25px;
+      background-color: var(--light-color);
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 1em;
+    }
+    
+    /* Fleet grid */
+    .fleet-section {
+      padding: 60px 0;
+    }
+    
+    .fleet-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .vehicle-card {
+      background-color: var(--light-color);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--box-shadow);
+      transition: transform 0.3s ease;
+    }
+    
+    .vehicle-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .vehicle-image {
+      height: 200px;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .vehicle-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .vehicle-card:hover .vehicle-image img {
+      transform: scale(1.05);
+    }
+    
+    .vehicle-type {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: var(--primary-color);
+      color: var(--light-color);
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .vehicle-info {
+      padding: 20px;
+    }
+    
+    .vehicle-name {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    
+    .vehicle-details {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+    
+    .vehicle-detail {
+      display: flex;
+      align-items: center;
+      color: var(--text-gray);
+    }
+    
+    .vehicle-detail i {
+      margin-right: 8px;
+      color: var(--primary-color);
+      width: 20px;
+      text-align: center;
+    }
+    
+    .vehicle-price {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--dark-color);
+      margin: 15px 0;
+    }
+    
+    .vehicle-price span {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--text-gray);
+    }
+    
+    .book-button {
+      display: block;
+      width: 100%;
+      background-color: var(--primary-color);
+      color: var(--light-color);
+      text-align: center;
+      padding: 12px;
+      border-radius: 5px;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    
+    .book-button:hover {
+      background-color: var(--secondary-color);
+    }
+    
+    /* Benefits section */
+    .benefits-section {
+      padding: 60px 0;
+      background-color: var(--gray-color);
+    }
+    
+    .benefits-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .benefit-card {
+      background-color: var(--light-color);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: var(--box-shadow);
+      text-align: center;
+    }
+    
+    .benefit-icon {
+      font-size: 40px;
+      color: var(--primary-color);
+      margin-bottom: 20px;
+    }
+    
+    .benefit-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+    
+    .benefit-text {
+      color: var(--text-gray);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        background-color: var(--light-color);
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: var(--box-shadow);
+      }
+      
+      .nav-menu.show {
+        display: flex;
+      }
+      
+      .hamburger {
+        display: block;
+      }
+      
+      .page-title h1 {
+        font-size: 32px;
+      }
+      
+      .fleet-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+    }
+  </style>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container navbar">
+      <a href="#" class="logo">
+        <i class="fas fa-car"></i>
+        <div class="logo-text"><span>Pilot</span>X</div>
+      </a>
+      <nav>
+        <div class="hamburger">
+          <i class="fas fa-bars"></i>
+        </div>
+        <div class="nav-menu">
+          <li class="nav-item"><a href="home.html" class="nav-link">Home</a></li>
+          <li class="nav-item"><a href="come-funziona.html" class="nav-link">Come funziona</a></li>
+          <li class="nav-item"><a href="la-nostra-flotta.html" class="nav-link">La nostra flotta</a></li>
+          <li class="nav-item"><a href="profilo.html" class="nav-link">Profilo</a></li>
+          <li class="nav-item"><a href="contatti.html" class="nav-link">Contatti</a></li>
+          <li class="nav-item"><a href="#" class="nav-link">Esci</a></li>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Title -->
+  <section class="page-title">
+    <div class="container">
+      <h1>Scopri la nostra flotta</h1>
+      <p>Auto elettriche, ibride e sostenibili per ogni esigenza.</p>
+    </div>
+  </section>
+
+  <!-- Filters -->
+  <section class="filters">
+    <div class="container filter-container">
+      <select class="filter-select" aria-label="Tipo veicolo">
+        <option value="">Tipo veicolo</option>
+        <option value="elettrico">Elettrico</option>
+        <option value="ibrido">Ibrido</option>
+        <option value="city-car">City car</option>
+        <option value="suv">SUV</option>
+      </select>
+      <select class="filter-select" aria-label="Autonomia">
+        <option value="">Autonomia</option>
+        <option value="200-300">200-300 km</option>
+        <option value="300-400">300-400 km</option>
+        <option value="400-500">400-500 km</option>
+        <option value="500+">500+ km</option>
+      </select>
+      <select class="filter-select" aria-label="Fascia di prezzo">
+        <option value="">Fascia di prezzo</option>
+        <option value="economy">Economy</option>
+        <option value="standard">Standard</option>
+        <option value="premium">Premium</option>
+      </select>
+    </div>
+  </section>
+
+  <!-- Fleet Grid -->
+  <section class="fleet-section">
+    <div class="container">
+      <div class="fleet-grid">
+        <!-- Vehicle 1 -->
+        <div class="vehicle-card">
+          <div class="vehicle-image">
+            <img src="https://cdn-xy.drivek.com/eyJidWNrZXQiOiJkYXRhay1jZG4teHkiLCJrZXkiOiJjb25maWd1cmF0b3ItaW1ncy9jYXJzL2l0LzgwMC9URVNMQS9NT0RFTC0zLzQzMDA1X0JFUkxJTkEtMy1WT0xVTUktNC1QT1JURS90ZXNsYS1tb2RlbC0zLWZyb250LXZpZXcuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo4MDAsImhlaWdodCI6bnVsbCwiZml0IjoiY292ZXIifX19" alt="Tesla Model 3">
+            <div class="vehicle-type">Elettrico</div>
+          </div>
+          <div class="vehicle-info">
+            <h3 class="vehicle-name">Tesla model 3</h3>
+            <div class="vehicle-details">
+              <div class="vehicle-detail">
+                <i class="fas fa-charging-station"></i>
+                <span>100% Elettrico</span>
+              </div>
+              <div class="vehicle-detail">
+                <i class="fas fa-road"></i>
+                <span>Autonomia: 460 km</span>
+              </div>
+              <div class="vehicle-detail">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>0-100 km/h: 5.6 sec</span>
+              </div>
+            </div>
+            <div class="vehicle-price">
+              €59 <span>/giorno</span>
+            </div>
+            <a href="#" class="book-button">Prenota ora</a>
+          </div>
+        </div>
+
+        <!-- Vehicle 2 -->
+        <div class="vehicle-card">
+          <div class="vehicle-image">
+            <img src="https://images.dealer.com/ddc/vehicles/2025/Volkswagen/ID.4/SUV/trim_Pro_2414b2/color/Pure%20White-0Q0Q-231%2C235%2C235-640-en_US.jpg?impolicy=downsize_bkpt&imdensity=1&w=520" alt="Volkswagen ID.4">
+            <div class="vehicle-type">Elettrico</div>
+          </div>
+          <div class="vehicle-info">
+            <h3 class="vehicle-name">Volkswagen ID.4</h3>
+            <div class="vehicle-details">
+              <div class="vehicle-detail">
+                <i class="fas fa-charging-station"></i>
+                <span>100% Elettrico</span>
+              </div>
+              <div class="vehicle-detail">
+                <i class="fas fa-road"></i>
+                <span>Autonomia: 520 km</span>
+              </div>
+              <div class="vehicle-detail">
+                <i class="fas fa-users"></i>
+                <span>5 posti</span>
+              </div>
+            </div>
+            <div class="vehicle-price">
+              €65 <span>/giorno</span>
+            </div>
+            <a href="#" class="book-button">Prenota ora</a>
+          </div>
+        </div>
+
+        <!-- Vehicle 3 -->
+        <div class="vehicle-card">
+          <div class="vehicle-image">
+            <img src="https://center.it/wp-content/uploads/2023/07/yaris_TOYOTA.png" alt="Toyota Yaris Hybrid">
+            <div class="vehicle-type">Ibrido</div>
+          </div>
+          <div class="vehicle-info">
+            <h3 class="vehicle-name">Toyota Yaris Hybrid</h3>
+            <div class="vehicle-details">
+              <div class="vehicle-detail">
+                <i class="fas fa-leaf"></i>
+                <span>Ibrido</span>
+              </div>
+              <div class="vehicle-detail">
+                <i class="fas fa-gas-pump"></i>
+                <span>Consumo: 3.8 l/100km</span>
+              </div>
+              <div class="vehicle-detail">
+                <i class="fas fa-car"></i>
+                <span>City Car</span>
+              </div>
+            </div>
+            <div class="vehicle-price">
+              €45 <span>/giorno</span>
+            </div>
+            <a href="#" class="book-button">Prenota ora</a>
+          </div>
+        </div>
+
+        <!-- Vehicle 4 -->
+        <div class="vehicle-card">
+          <div class="vehicle-image">
+            <img src="https://s7g10.scene7.com/is/image/hyundaiautoever/SX2_EV_calculator_asset_4x3:4x3?wid=960&hei=720&fmt=png-alpha&fit=wrap,1" alt="Hyundai Kona Electric">
+            <div class="vehicle-type">Elettrico</div>
+          </div>
+          <div class="vehicle-info">
+            <h3 class="vehicle-name">Hyundai Kona Electric</h3>
+            <div class="vehicle-details">
+              <div class="vehicle-detail">
+                <i class="fas fa-charging-station"></i>
+                <span>100% Elettrico</span>
+              </div>
+              <div class="vehicle-detail">
+                <i class="fas fa-road"></i>
+                <span>Autonomia: 400 km</span>
+              </div>
+              <div class="vehicle-detail">
+                <i class="fas fa-car-side"></i>
+                <span>SUV Compatto</span>
+              </div>
+            </div>
+            <div class="vehicle-price">
+              €54 <span>/giorno</span>
+            </div>
+            <a href="#" class="book-button">Prenota ora</a>
+          </div>
+        </div>
+
+        <!-- Vehicle 5 -->
+        <div class="vehicle-card">
+          <div class="vehicle-image">
+            <img src= "https://cdn.dealerk.it/dealer/datafiles/vehicle/images/480x0/780/xkVXo1ztCDSFsXCS.jpeg" alt="Fiat 500e">
+            <div class="vehicle-type">Elettrico</div>
+          </div>
+          <div class="vehicle-info">
+            <h3 class="vehicle-name">Fiat 500e</h3>
+            <div class="vehicle-details">
+              <div class="vehicle-detail">
+                <i class="fas fa-charging-station"></i>
+                <span>100% Elettrico</span>
+              </div>
+              <div class="vehicle-detail">
+                <i class="fas fa-road"></i>
+                <span>Autonomia: 320 km</span>
+              </div>
+              <div class="vehicle-detail">
+                <i class="fas fa-car"></i>
+                <span>City Car</span>
+              </div>
+            </div>
+            <div class="vehicle-price">
+              €42 <span>/giorno</span>
+            </div>
+            <a href="#" class="book-button">Prenota ora</a>
+          </div>
+        </div>
+
+        <!-- Vehicle 6 -->
+        <div class="vehicle-card">
+          <div class="vehicle-image">
+            <img src="https://www.fordazzurra.it/images/vehicles/4214605/0/large" alt="Ford Puma Hybrid">
+            <div class="vehicle-type">Ibrido</div>
+          </div>
+          <div class="vehicle-info">
+            <h3 class="vehicle-name">Ford Puma Hybrid</h3>
+            <div class="vehicle-details">
+              <div class="vehicle-detail">
+                <i class="fas fa-leaf"></i>
+                <span>Ibrido</span>
+              </div>
+              <div class="vehicle-detail">
+                <i class="fas fa-gas-pump"></i>
+                <span>Consumo: 4.3 l/100km</span>
+              </div>
+              <div class="vehicle-detail">
+                <i class="fas fa-car-side"></i>
+                <span>Crossover</span>
+              </div>
+            </div>
+            <div class="vehicle-price">
+              €49 <span>/giorno</span>
+            </div>
+            <a href="#" class="book-button">Prenota ora</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="benefits-section">
+    <div class="container">
+      <h2 class="benefits-title">I vantaggi della nostra flotta</h2>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-tools"></i>
+          </div>
+          <h3 class="benefit-title">Manutenzione inclusa</h3>
+          <p class="benefit-text">Non preoccuparti della manutenzione del veicolo. Tutti i costi sono coperti, così puoi concentrarti solo sulla guida.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-credit-card"></i>
+          </div>
+          <h3 class="benefit-title">Nessun deposito cauzionale</h3>
+          <p class="benefit-text">Prenota senza pensieri. Non richiediamo alcun deposito cauzionale per il noleggio delle nostre auto.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-clock"></i>
+          </div>
+          <h3 class="benefit-title">Ritiro e riconsegna flessibili</h3>
+          <p class="benefit-text">Orari flessibili e possibilità di riconsegna 24/7 tramite la nostra app. La tua comodità è la nostra priorità.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-column">
+                <div class="footer-logo"><span>Pilot</span>X</div>
+                <p>Servizio di car sharing ecologico che sta rivoluzionando il modo di muoversi in città.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Link utili</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Come funziona</a></li>
+                    <li><a href="#">La nostra flotta</a></li>
+                    <li><a href="#">Prezzi</a></li>
+                    <li><a href="#">Domande frequenti</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Supporto</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Centro assistenza</a></li>
+                    <li><a href="#">Contattaci</a></li>
+                    <li><a href="#">Termini e condizioni</a></li>
+                    <li><a href="#">Privacy policy</a></li>
+                    <li><a href="#">Cookie policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contatti</h3>
+                <div class="contact-info">
+                    <p><i class="fas fa-map-marker-alt"></i> Via Milano 123, 20100 Milano</p>
+                    <p><i class="fas fa-phone"></i> +39 02 1234567</p>
+                    <p><i class="fas fa-envelope"></i> info@pilotx.it</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 PilotX Car Sharing. Tutti i diritti riservati.</p>
+        </div>
+    </div>
+</footer>
+
+  <script>
+    // Mobile menu toggle
+    document.querySelector('.hamburger').addEventListener('click', function() {
+      document.querySelector('.nav-menu').classList.toggle('show');
+    });
+    
+    // Filter functionality
+    document.querySelectorAll('.filter-item').forEach(item => {
+      item.addEventListener('click', function() {
+        this.classList.toggle('active');
+        // Add filter logic here
+      });
+    });
+  </script>
+</body>
+</html>

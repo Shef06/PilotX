@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Personale | PilotX Car Sharing</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Variabili colori */
+        :root {
+            --primary-color: #34D399; /* Aggiornato al verde di TailwindCSS */
+            --primary-dark: #10B981;  /* Versione più scura per hover */
+            --light-gray: #f5f5f5;
+            --medium-gray: #e0e0e0;
+            --dark-gray: #333333;
+            --white: #ffffff;
+        }
+
+        /* Stili generali */
+        body {
+            font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+       
+
+        /* Dashboard Specifici */
+        .main-content {
+            padding-top: 100px;
+            padding-bottom: 60px;
+        }
+
+        .welcome-section {
+            margin-bottom: 40px;
+        }
+
+        .welcome-section h1 {
+            margin-bottom: 12px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .dashboard-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            padding: 24px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--medium-gray);
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .card-title i {
+            color: var(--primary-color);
+            margin-right: 8px;
+        }
+
+        .booking-item {
+            padding-bottom: 12px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+
+        .booking-item:last-child {
+            border-bottom: none;
+        }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .booking-status {
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            border-radius: 9999px;
+        }
+
+        .status-active {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+
+        .status-completed {
+            background-color: #F3F4F6;
+            color: #4B5563;
+        }
+
+        .view-link {
+            color: var(--primary-color);
+            font-size: 0.875rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 4px;
+        }
+
+        .view-link:hover {
+            text-decoration: underline;
+        }
+
+        .view-all {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            color: var(--primary-color);
+            font-size: 0.875rem;
+            text-decoration: none;
+        }
+
+        .view-all:hover {
+            text-decoration: underline;
+        }
+
+        .data-field {
+            margin-bottom: 12px;
+        }
+
+        .data-label {
+            font-size: 0.875rem;
+            color: #6B7280;
+        }
+
+        .btn-full {
+            width: 100%;
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .preferences-section {
+            margin-bottom: 24px;
+        }
+
+        .preference-title {
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .checkbox-row input {
+            margin-right: 8px;
+        }
+
+        .stats-section {
+            background-color: var(--light-gray);
+            border-radius: 10px;
+            padding: 24px;
+            margin-bottom: 48px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .stat-card {
+            background-color: var(--white);
+            padding: 16px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .stat-card i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: #6B7280;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .contact-info p {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .contact-info i {
+            margin-right: 10px;
+            margin-top: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 992px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: var(--white);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+                padding: 20px 0;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-item {
+                margin: 15px 0;
+            }
+
+            .footer-column {
+                min-width: 100%;
+            }
+        }
+
+        @media screen and (max-width: 576px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header Sticky -->
+    <header>
+        <div class="container navbar">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div class="logo-text"><span>Pilot</span>X</div>
+            </div>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="home.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="come-funziona.html" class="nav-link">Come funziona</a></li>
+                    <li class="nav-item"><a href="la-nostra-flotta.html" class="nav-link">La nostra flotta</a></li>
+                    <li class="nav-item"><a href="profilo.html" class="nav-link">Profilo</a></li>
+                    <li class="nav-item"><a href="contatti.html" class="nav-link">Contatti</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Esci</a></li>
+                </ul>
+                <button class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+        
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" style="display: none;">
+            <div class="container">
+                <a href="#" style="display: block; padding: 12px 0; color: var(--dark-gray); text-decoration: none;">Home</a>
+                <a href="#" style="display: block; padding: 12px 0; color: var(--dark-gray); text-decoration: none;">Prenota</a>
+                <a href="#" style="display: block; padding: 12px 0; color: var(--primary-color); text-decoration: none; font-weight: 600;">Profilo</a>
+                <a href="#" style="display: block; padding: 12px 0; color: var(--dark-gray); text-decoration: none;">Esci</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container main-content">
+        <!-- Sezione Benvenuto -->
+        <section class="welcome-section">
+            <h1>Benvenuto, Marco</h1>
+            <p style="color: #6B7280; font-size: 1.125rem;">Gestisci i tuoi viaggi, dati personali e preferenze.</p>
+        </section>
+
+        <!-- Card con 3 pannelli principali -->
+        <div class="dashboard-grid">
+            <!-- Le mie prenotazioni -->
+            <div class="dashboard-card">
+                <h2 class="card-title">
+                    <i class="fas fa-car-side"></i>
+                    Le mie prenotazioni
+                </h2>
+                <div>
+                    <div class="booking-item">
+                        <div class="booking-header">
+                            <div>
+                                <p style="font-weight: 600;">Fiat 500e</p>
+                                <p style="font-size: 0.875rem; color: #6B7280;">22/05/2025 - 23/05/2025</p>
+                            </div>
+                            <span class="booking-status status-active">Attiva</span>
+                        </div>
+                        <a href="#" class="view-link">Vedi dettagli</a>
+                    </div>
+                    
+                    <div class="booking-item">
+                        <div class="booking-header">
+                            <div>
+                                <p style="font-weight: 600;">Tesla Model Y</p>
+                                <p style="font-size: 0.875rem; color: #6B7280;">10/05/2025 - 12/05/2025</p>
+                            </div>
+                            <span class="booking-status status-completed">Completata</span>
+                        </div>
+                        <a href="#" class="view-link">Vedi dettagli</a>
+                    </div>
+                    
+                    <div class="booking-item">
+                        <div class="booking-header">
+                            <div>
+                                <p style="font-weight: 600;">BMW i3</p>
+                                <p style="font-size: 0.875rem; color: #6B7280;">01/05/2025 - 02/05/2025</p>
+                            </div>
+                            <span class="booking-status status-completed">Completata</span>
+                        </div>
+                        <a href="#" class="view-link">Vedi dettagli</a>
+                    </div>
+                </div>
+                <a href="#" class="view-all">Visualizza tutte le prenotazioni</a>
+            </div>
+            
+            <!-- Dati personali -->
+            <div class="dashboard-card">
+                <h2 class="card-title">
+                    <i class="fas fa-user"></i>
+                    Dati personali
+                </h2>
+                <div style="margin-bottom: 16px;">
+                    <div class="data-field">
+                        <p class="data-label">Nome completo</p>
+                        <p>Marco Rossi</p>
+                    </div>
+                    <div class="data-field">
+                        <p class="data-label">Email</p>
+                        <p>marco.rossi@email.it</p>
+                    </div>
+                    <div class="data-field">
+                        <p class="data-label">Telefono</p>
+                        <p>+39 345 123 4567</p>
+                    </div>
+                    <div class="data-field">
+                        <p class="data-label">Indirizzo</p>
+                        <p>Via Roma 123, Milano</p>
+                    </div>
+                    <div class="data-field">
+                        <p class="data-label">Patente</p>
+                        <p>MI12345678</p>
+                    </div>
+                </div>
+                <button class="btn btn-full">
+                    Modifica
+                </button>
+            </div>
+            
+            <!-- Preferenze -->
+            <div class="dashboard-card">
+                <h2 class="card-title">
+                    <i class="fas fa-sliders-h"></i>
+                    Preferenze
+                </h2>
+                <div style="margin-bottom: 24px;">
+                    <div class="preferences-section">
+                        <h3 class="preference-title">Notifiche</h3>
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="email-notif" checked>
+                            <label for="email-notif">Notifiche via email</label>
+                        </div>
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="sms-notif" checked>
+                            <label for="sms-notif">Notifiche via SMS</label>
+                        </div>
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="push-notif">
+                            <label for="push-notif">Notifiche push</label>
+                        </div>
+                    </div>
+                    
+                    <div class="preferences-section">
+                        <h3 class="preference-title">Preferenze veicoli</h3>
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="electric" checked>
+                            <label for="electric">Elettrico</label>
+                        </div>
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="hybrid">
+                            <label for="hybrid">Ibrido</label>
+                        </div>
+                        <div class="checkbox-row">
+                            <input type="checkbox" id="automatic" checked>
+                            <label for="automatic">Cambio automatico</label>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-full">
+                    Salva modifiche
+                </button>
+            </div>
+        </div>
+
+        <!-- Sezione statistiche o badge -->
+        <section class="stats-section">
+            <h2 style="text-align: left; margin-bottom: 16px;">Le tue statistiche PilotX</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <i class="fas fa-car"></i>
+                    <p class="stat-value">26</p>
+                    <p class="stat-label">Prenotazioni totali</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-road"></i>
+                    <p class="stat-value">1.245 km</p>
+                    <p class="stat-label">Percorsi totali</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-leaf"></i>
+                    <p class="stat-value">283 kg</p>
+                    <p class="stat-label">CO₂ risparmiata</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-medal"></i>
+                    <p class="stat-value">Oro</p>
+                    <p class="stat-label">Livello utente</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <div class="footer-logo"><span>Pilot</span>X</div>
+                    <p>Servizio di car sharing ecologico che sta rivoluzionando il modo di muoversi in città.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Link utili</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Come funziona</a></li>
+                        <li><a href="#">La nostra flotta</a></li>
+                        <li><a href="#">Prezzi</a></li>
+                        <li><a href="#">Domande frequenti</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Supporto</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Centro assistenza</a></li>
+                        <li><a href="#">Contattaci</a></li>
+                        <li><a href="#">Termini e condizioni</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contatti</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt"></i> Via Milano 123, 20100 Milano</p>
+                        <p><i class="fas fa-phone"></i> +39 02 1234567</p>
+                        <p><i class="fas fa-envelope"></i> info@pilotx.it</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 PilotX Car Sharing. Tutti i diritti riservati.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.querySelector('.hamburger');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            if (mobileMenu.style.display === 'none') {
+                mobileMenu.style.display = 'block';
+            } else {
+                mobileMenu.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contatti - PilotX Car Sharing</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset e stili di base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        
+        /* Colori principali */
+        :root {
+            --primary-color: #2ecc71;  /* Verde */
+            --secondary-color: #34495e; /* Grigio scuro */
+            --accent-color: #27ae60;   /* Verde scuro */
+            --light-color: #ffffff;    /* Bianco */
+            --gray-color: #f5f5f5;     /* Grigio chiaro */
+            --dark-gray: #555;
+        }
+        
+        /* Container generale */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        section {
+            padding: 3rem 0;
+        }
+        
+        /* Header sticky */
+        header {
+            background-color: var(--light-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+        
+        .logo span {
+            color: var(--primary-color);
+        }
+        
+        /* Menu di navigazione desktop */
+        .nav-desktop {
+            display: flex;
+        }
+        
+        .nav-desktop ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-desktop ul li {
+            margin-left: 20px;
+        }
+        
+        .nav-desktop ul li a {
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+        
+        .nav-desktop ul li a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-desktop ul li a.active {
+            color: var(--light-color);
+            background-color: var(--primary-color);
+        }
+        
+        /* Menu hamburger per mobile */
+        .hamburger {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--secondary-color);
+        }
+        
+        .nav-mobile {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            background-color: var(--light-color);
+            padding: 15px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-mobile ul {
+            list-style: none;
+        }
+        
+        .nav-mobile ul li {
+            margin-bottom: 15px;
+        }
+        
+        .nav-mobile ul li a {
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: 500;
+            display: block;
+            padding: 8px 0;
+        }
+        
+        .nav-mobile ul li a.active {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        /* Titolo principale */
+        .page-title {
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            text-align: center;
+            padding: 3rem 0;
+        }
+        
+        .page-title h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .page-title p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Form di contatto */
+        .contact-form-section {
+            background-color: var(--light-color);
+            padding: 4rem 0;
+        }
+        
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .contact-form {
+            grid-column: span 2;
+        }
+        
+        @media (min-width: 768px) {
+            .contact-form {
+                grid-column: span 1;
+            }
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: var(--accent-color);
+        }
+        
+        .success-message {
+            display: none;
+            background-color: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        /* Informazioni di contatto */
+        .contact-info {
+            padding: 20px;
+            background-color: var(--gray-color);
+            border-radius: 8px;
+        }
+        
+        .contact-info h3 {
+            margin-bottom: 1.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .contact-details div {
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .contact-details i {
+            margin-right: 15px;
+            color: var(--primary-color);
+            min-width: 20px;
+            text-align: center;
+        }
+        
+        /* Mappa */
+        .map-section {
+            background-color: var(--gray-color);
+        }
+        
+        .map-container {
+            height: 400px;
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        /* CTA Secondaria */
+        .cta-section {
+            background-color: var(--secondary-color);
+            color: var(--light-color);
+            text-align: center;
+            padding: 3rem 0;
+        }
+        
+        .cta-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .cta-container h2 {
+            margin-bottom: 1rem;
+        }
+        
+        .cta-container p {
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn-cta {
+            background-color: var(--primary-color);
+            padding: 15px 30px;
+            font-size: 1.1rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--secondary-color);
+            color: var(--light-color);
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        .footer-column p {
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+        
+        .social-icons {
+            display: flex;
+            margin-top: 1.5rem;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 35px;
+            width: 35px;
+            background-color: rgba(255, 255, 255, 0.1);
+            margin-right: 10px;
+            border-radius: 50%;
+            color: var(--light-color);
+            transition: background-color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--primary-color);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .footer-contact p {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .footer-contact i {
+            margin-right: 15px;
+            color: var(--primary-color);
+            min-width: 20px;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 991px) {
+            .form-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-form {
+                grid-column: span 1;
+                order: 2;
+            }
+            
+            .contact-info {
+                order: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-desktop {
+                display: none;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
+            .header-container {
+                padding: 15px;
+            }
+            
+            .page-title h1 {
+                font-size: 2rem;
+            }
+            
+            .page-title p {
+                font-size: 1rem;
+            }
+            
+            section {
+                padding: 2rem 0;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header sticky -->
+    <header>
+        <div class="container navbar">
+            <div class="logo">
+                <i class="fas fa-car"></i>
+                <div class="logo-text"><span>Pilot</span>X</div>
+            </div>
+            
+            <nav>
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="home.html" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="come-funziona.html" class="nav-link">Come funziona</a></li>
+                    <li class="nav-item"><a href="la-nostra-flotta.html" class="nav-link">La nostra flotta</a></li>
+                    <li class="nav-item"><a href="profilo.html" class="nav-link">Profilo</a></li>
+                    <li class="nav-item"><a href="contatti.html" class="nav-link">Contatti</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Esci</a></li>
+                </ul>
+                <button class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+            
+            <!-- Hamburger menu per mobile -->
+            <div class="hamburger">
+                <i class="fas fa-bars" id="hamburger-icon"></i>
+            </div>
+            
+            <!-- Menu mobile -->
+            <nav class="nav-mobile" id="mobile-menu">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="prenota.html">Prenota</a></li>
+                    <li><a href="flotta.html">La nostra flotta</a></li>
+                    <li><a href="prezzi.html">Prezzi</a></li>
+                    <li><a href="profilo.html">Profilo</a></li>
+                    <li><a href="contatti.html" class="active">Contatti</a></li>
+                    <li><a href="logout.html">Esci</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Titolo principale -->
+    <section class="page-title">
+        <div class="container">
+            <h1>Contattaci</h1>
+            <p>Siamo qui per aiutarti 24/7</p>
+        </div>
+    </section>
+    
+    <!-- Sezione form di contatto -->
+    <section class="contact-form-section">
+        <div class="container">
+            <div class="form-container">
+                <!-- Form di contatto -->
+                <div class="contact-form">
+                    <h2>Inviaci un messaggio</h2>
+                    <p style="margin-bottom: 2rem;">Compila il form sottostante e ti risponderemo entro 24 ore.</p>
+                    
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Nome</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Oggetto</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Messaggio</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Invia messaggio</button>
+                    </form>
+                    
+                    <div class="success-message" id="successMessage">
+                        <p>Grazie per averci contattato! Ti risponderemo il prima possibile.</p>
+                    </div>
+                </div>
+                
+                <!-- Informazioni di contatto -->
+                <div class="contact-info">
+                    <h3>Informazioni di contatto</h3>
+                    
+                    <div class="contact-details">
+                        <div>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p>Via Roma 123, Milano, Italia</p>
+                        </div>
+                        
+                        <div>
+                            <i class="fas fa-envelope"></i>
+                            <p>support@pilotx.it</p>
+                        </div>
+                        
+                        <div>
+                            <i class="fas fa-phone-alt"></i>
+                            <p>+39 0123 456789</p>
+                        </div>
+                        
+                        <div>
+                            <i class="far fa-clock"></i>
+                            <p>Lun–Ven: 9:00–18:00</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 2rem;">
+                        <h4>Seguici sui social</h4>
+                        <div class="social-icons" style="margin-top: 1rem;">
+                            <a href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Mappa -->
+    <section class="map-section">
+        <div class="container">
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2798.2239658953855!2d9.18990961528729!3d45.46588797910121!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4786c6aec34636a1%3A0xab7f4e27101a2e08!2sVia%20Roma%2C%20Milano%20MI!5e0!3m2!1sit!2sit!4v1620758321713!5m2!1sit!2sit" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Call to Action secondaria -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-container">
+                <h2>Hai bisogno di aiuto urgente?</h2>
+                <p>Chiama il nostro numero di emergenza attivo 24 ore su 24</p>
+                <a href="tel:+390123457890" class="btn btn-cta">Chiama ora</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <!-- Colonna 1: Logo e social -->
+                <div class="footer-column">
+                    <h3>PilotX</h3>
+                    <p>Car sharing semplice, veloce e conveniente per ogni tua esigenza di mobilità urbana.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Colonna 2: Link utili -->
+                <div class="footer-column">
+                    <h3>Link utili</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Chi siamo</a></li>
+                        <li><a href="#">Come funziona</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Termini e condizioni</a></li>
+                        <li><a href="#">Privacy policy</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Colonna 3: Supporto -->
+                <div class="footer-column">
+                    <h3>Supporto</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Centro assistenza</a></li>
+                        <li><a href="#">Guida all'uso</a></li>
+                        <li><a href="#">Segnala un problema</a></li>
+                        <li><a href="#">Contattaci</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Colonna 4: Contatti -->
+                <div class="footer-column footer-contact">
+                    <h3>Contatti</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Via Roma 123, Milano, Italia</p>
+                    <p><i class="fas fa-phone-alt"></i> +39 0123 456789</p>
+                    <p><i class="fas fa-envelope"></i> info@pilotx.it</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 PilotX Car Sharing. Tutti i diritti riservati.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Toggle menu mobile
+        document.getElementById('hamburger-icon').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+        });
+        
+        // Gestione form di contatto
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Simulazione di invio
+            setTimeout(function() {
+                document.getElementById('contactForm').reset();
+                document.getElementById('successMessage').style.display = 'block';
+                
+                // Nascondi il messaggio dopo 5 secondi
+                setTimeout(function() {
+                    document.getElementById('successMessage').style.display = 'none';
+                }, 5000);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
